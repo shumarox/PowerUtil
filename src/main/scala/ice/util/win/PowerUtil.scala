@@ -7,15 +7,15 @@ import com.sun.jna.{Library, Native}
 
 object PowerUtil {
 
-  private trait PowerProf extends Library {
+  private trait PowrProf extends Library {
     def SetSuspendState(hibernate: Boolean, force: Boolean, wakeupEventsDisabled: Boolean): Boolean
   }
 
-  private val PowerProf: PowerProf = Native.loadLibrary("powrprof", classOf[PowerProf], W32APIOptions.DEFAULT_OPTIONS)
+  private val PowrProf: PowrProf = Native.load("powrprof", classOf[PowrProf], W32APIOptions.DEFAULT_OPTIONS)
 
-  def suspend(): Unit = PowerProf.SetSuspendState(hibernate = false, force = false, wakeupEventsDisabled = false)
+  def suspend(): Unit = PowrProf.SetSuspendState(hibernate = false, force = false, wakeupEventsDisabled = false)
 
-  def hibernate(): Unit = PowerProf.SetSuspendState(hibernate = true, force = false, wakeupEventsDisabled = false)
+  def hibernate(): Unit = PowrProf.SetSuspendState(hibernate = true, force = false, wakeupEventsDisabled = false)
 
   private def setShutdownPrivileges(): Unit = {
     val token = new WinNT.HANDLEByReference
